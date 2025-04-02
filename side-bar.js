@@ -10,34 +10,38 @@ menuIcon.onclick = function(){
     
 }
 const apiKey=AIzaSyBCF_e5Cpg1a9Nb-mHq0IVKDJ3vqzsZ39Q;
-// Select elements
-const darkModeToggle = document.getElementById('darkModeToggle');
+// Get toggle switch and store user's preference in local storage
+const darkModeToggle = document.getElementById("darkModeToggle");
 const body = document.body;
 
-// Function to set the theme
-function setTheme(isDarkMode) {
-    if (isDarkMode) {
-        body.classList.add('dark-mode');
-    } else {
-        body.classList.remove('dark-mode');
-    }
-}
-
-// Function to save theme preference
-function saveThemePreference(isDarkMode) {
-    localStorage.setItem('darkMode', isDarkMode);
-}
-
-// Load theme preference on page load
-const savedTheme = localStorage.getItem('darkMode');
-if (savedTheme === 'true') {
-    setTheme(true);
+// Check local storage for dark mode preference
+if (localStorage.getItem("darkMode") === "enabled") {
+    body.classList.add("dark-mode");
     darkModeToggle.checked = true;
 }
 
-// Toggle event listener
-darkModeToggle.addEventListener('change', () => {
-    const isDarkMode = darkModeToggle.checked;
-    setTheme(isDarkMode);
-    saveThemePreference(isDarkMode);
+// Toggle dark mode on checkbox change
+darkModeToggle.addEventListener("change", () => {
+    if (darkModeToggle.checked) {
+        body.classList.add("dark-mode");
+        localStorage.setItem("darkMode", "enabled"); // Save preference
+    } else {
+        body.classList.remove("dark-mode");
+        localStorage.setItem("darkMode", "disabled"); // Save preference
+    }
+});
+
+
+document.getElementById("searchButton").addEventListener("click", function () {
+    let query = document.getElementById("searchInput").value.toLowerCase();
+    let videos = document.querySelectorAll(".vid-list");
+
+    videos.forEach(video => {
+        let title = video.querySelector(".vid-info a").innerText.toLowerCase();
+        if (title.includes(query)) {
+            video.style.display = "block"; // Show matching videos
+        } else {
+            video.style.display = "none"; // Hide non-matching videos
+        }
+    });
 });
